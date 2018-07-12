@@ -178,6 +178,12 @@ public class AVLTree<T extends Comparable<T>> {
         return null;
     }
 
+
+    /**
+     * 旋转的关键，在于哪个点失去平衡，就针对哪个点进行旋转；
+     */
+
+
     /*
      * LL：左左对应的情况(左单旋转)。
      *

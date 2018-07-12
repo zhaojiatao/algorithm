@@ -190,6 +190,15 @@ public class BSTree<T extends Comparable<T>> {
         // 如果x没有右孩子。则x有以下两种可能：
         // (01) x是"一个左孩子"，则"x的后继结点"为 "它的父结点"。
         // (02) x是"一个右孩子"，则查找"x的最低的父结点，并且该父结点要具有左孩子"，找到的这个"最低的父结点"就是"x的后继结点"。
+        //      tips:上面的这句话按我的理解，可以表述为：如果当前节点x为右节点，则寻找x节点的父节点y；如果y为右节点，再寻找y的父节点z。
+        //           直到当前节点为其父节点的左节点的时候为止，返回当前节点的父节点；(向上查找路径第一次右拐遇到的父节点)
+        /*
+        *                   6
+        *     2                        8
+        * 1         4           7           9
+        *       3       5
+        *
+        */
         BSTNode<T> y = x.parent;
         while ((y!=null) && (x==y.right)) {
             x = y;
@@ -210,6 +219,8 @@ public class BSTree<T extends Comparable<T>> {
         // 如果x没有左孩子。则x有以下两种可能：
         // (01) x是"一个右孩子"，则"x的前驱结点"为 "它的父结点"。
         // (01) x是"一个左孩子"，则查找"x的最低的父结点，并且该父结点要具有右孩子"，找到的这个"最低的父结点"就是"x的前驱结点"。
+        //      tips:上面的这句话按我的理解，可以表述为：如果当前节点x为左节点，则寻找x节点的父节点y；如果y为左节点，再寻找y的父节点z。
+        //           直到当前节点为其父节点的右节点的时候为止，返回当前节点的父节点；(向上查找路径第一次左拐遇到的父节点)
         BSTNode<T> y = x.parent;
         while ((y!=null) && (x==y.left)) {
             x = y;
@@ -271,8 +282,22 @@ public class BSTree<T extends Comparable<T>> {
             insert(this, z);
     }
 
+
+
+    /**
+     删除的操作，参考这里：https://blog.csdn.net/isea533/article/details/80345507
+     删除节点存在 3 种情况，几乎所有类似博客都提到了这点。这 3 种情况分别如下：
+     1、没有左右子节点，可以直接删除
+     2、存在左节点或者右节点，删除后需要对子节点移动
+     3、同时存在左右子节点，不能简单的删除，但是可以通过和后继节点交换后转换为前两种情况
+     */
+
+
     private BSTNode<T> delete(BSTNode<T> node) {
         //第 3 种情况，如果同时存在左右子节点
+        /**
+         * 这种情况要注意，并不是真正删除了待删除节点对象，实际上真正被删除的是待删除节点对象的后继节点；
+         */
         if (node.left != null && node.right != null){
             //获取后继结点
             BSTNode<T> successor = successor(node);
@@ -287,6 +312,8 @@ public class BSTree<T extends Comparable<T>> {
         if (node.left != null)
             child = node.left;
         else
+            // 第一种情况，会在此处将子节点赋值为null；
+            // 第三种情况，会在此处，将child赋值为后继节点的右子节点；
             child = node.right;
         //如果 child != null，就说明是有一个节点的情况
         if (child != null)
