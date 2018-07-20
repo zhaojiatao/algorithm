@@ -16,6 +16,7 @@ import java.util.List;
  2. 数据添加的效率（Add的效率）
  ArrayList：数组的数据添加，如果在头部或者中间性能最差，因为需要更改后面所有数据的位置和索引。如果在尾部性能则影响不大。
  LinkedList：插入的效率比ArrayList和Vector都高，因为只需要更改相应位置前后节点的指向就行。
+ 即，一般情况下数组的插入性能不如链表，但是，当ArrayList和LinkedList以add(int index, E element)方式，向中间插入10000条以上时，数组的性能则会大于链表的性能，
  3. 数据移除的效率（Remove的效率）
  数据移除同添加
  4. 数据替换的效率（Set的效率）
